@@ -49,63 +49,109 @@ int main() {
 		return 1;
 	}
 
-	//等待连接
-	SOCKADDR_IN addrClient;
-	int len = sizeof(addrClient);
-	SOCKET sockConn = accept(sockSrv, (SOCKADDR*)&addrClient, &len);
-	if (sockConn == INVALID_SOCKET)
+	//连接两个客户端
+	SOCKADDR_IN addrClient1;
+	SOCKADDR_IN addrClient2;
+	int len1 = sizeof(addrClient1);
+	int len2 = sizeof(addrClient2);
+	SOCKET sockConn1 = accept(sockSrv, (SOCKADDR*)&addrClient1, &len1);
+	if (sockConn1 == INVALID_SOCKET)
 	{
-		cout << "客户端发出请求，服务器接收请求失败：" << WSAGetLastError() << endl;
-		closesocket(sockConn);
+		cout << "客户端1发出请求，服务器接收请求失败：" << WSAGetLastError() << endl;
+		closesocket(sockConn1);
 		WSACleanup();
 		return 1;
 	}
 	else {
-		cout << "服务器接收请求" << endl;
+		cout << "服务器接收客户端1的请求" << endl;
+	}
+	SOCKET sockConn2 = accept(sockSrv, (SOCKADDR*)&addrClient2, &len2);
+	if (sockConn2 == INVALID_SOCKET)
+	{
+		cout << "客户端2发出请求，服务器接收请求失败：" << WSAGetLastError() << endl;
+		closesocket(sockConn2);
+		WSACleanup();
+		return 1;
+	}
+	else {
+		cout << "服务器接收客户端2的请求" << endl;
 	}
 
-	char recvBuf[512] = { 0 };
-	int relen = recv(sockConn, recvBuf, 512, 0);
-	if (relen == SOCKET_ERROR) {
-		cout << "服务器没有收到消息：" << WSAGetLastError() << endl;
-		closesocket(sockSrv);
-		WSACleanup();
-		return 1;
-	}
-	else {
-		cout << "服务器收到消息：" << recvBuf << endl;
-	}
-	int slen = send(sockConn, recvBuf, relen, 0);
-	if (slen == SOCKET_ERROR) {
-		cout << "服务器发送消息失败：" << WSAGetLastError() << endl;
-		closesocket(sockSrv);
-		WSACleanup();
-		return 1;
-	}
-	else {
-		cout << "服务器发送消息：" << recvBuf << endl;
-	}
-	/*
-	while (1)
-	{
-		while (1) {
-
+	
+	char recvBuf[1024] = { 0 };
+	int recv1_result = 0;
+	int send1_result = 0;
+	int recv2_result = 0;
+	int send2_result = 0;
+	
+	while (1) {
+		while (1) {//从客户端1接收消息，发送给客户端2
+			memset(recvBuf, '\0', sizeof(recvBuf));
+			recv1_result = recv(sockConn1, recvBuf, 1024, 0);
+			if (recv1_result == SOCKET_ERROR) {
+				cout << "服务器没有收到客户端1的消息：" << WSAGetLastError() << endl;
+				closesocket(sockConn1);
+				WSACleanup();
+				return 1;
+			}
+			else {
+				cout << "服务器收到客户端1的消息：" << recvBuf << endl;
+			}
+			send2_result = send(sockConn2, recvBuf, 1024, 0);
+			if (send2_result == SOCKET_ERROR) {
+				cout << "服务器向客户端2发送消息失败：" << WSAGetLastError() << endl;
+				closesocket(sockConn2);
+				WSACleanup();
+				return 1;
+			}
+			else {
+				cout << "服务器向客户端2发送消息：" << recvBuf << endl;
+			}
+			if (strcmp(recvBuf, "exit") == 0) {
+				closesocket(sockConn1);
+				closesocket(sockConn2);
+				WSACleanup();
+				return 1;
+			}
+			if (strcmp(recvBuf, "over") == 0) {
+				break;
+			}
 		}
-		send(sockConn, sendBuf, strlen, 0);
-		int recv_result;
-		do {
-			recv_result = recv(sockSrv, recvbuf, 512, 0);
-			if (recv_result > 0)
-				cout << "收到信息：" << recv_result;
-			else if (recv_result == 0)
-				cout << "连接关闭";
-			else
-				cout << "收到失败：" << WSAGetLastError();
-		} while (recv_result > 0);
-		closesocket(sockConn);
-	}*/
+		while (1) {//从客户端2接收消息，发送给客户端1
+			memset(recvBuf, '\0', sizeof(recvBuf));
+			recv2_result = recv(sockConn2, recvBuf, 1024, 0);
+			if (recv2_result == SOCKET_ERROR) {
+				cout << "服务器没有收到客户端2的消息：" << WSAGetLastError() << endl;
+				closesocket(sockConn2);
+				WSACleanup();
+				return 1;
+			}
+			else {
+				cout << "服务器收到客户端2的消息：" << recvBuf << endl;
+			}
+			send1_result = send(sockConn1, recvBuf, 1024, 0);
+			if (send1_result == SOCKET_ERROR) {
+				cout << "服务器向客户端1发送消息失败：" << WSAGetLastError() << endl;
+				closesocket(sockConn1);
+				WSACleanup();
+				return 1;
+			}
+			else {
+				cout << "服务器向客户端1发送消息：" << recvBuf << endl;
+			}
+			if (strcmp(recvBuf, "exit") == 0) {
+				closesocket(sockConn1);
+				closesocket(sockConn2);
+				WSACleanup();
+				return 1;
+			}
+			if (strcmp(recvBuf, "over") == 0) {
+				break;
+			}
+		}
+	}
 	
 	closesocket(sockSrv);
 	WSACleanup();
-
+	return 0;
 }
