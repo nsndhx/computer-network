@@ -14,14 +14,14 @@ using namespace std;
 
 #pragma pack(1)		//进入字节对齐方式
 typedef struct FrameHeader_t {	//帧首部
-	BYTE	DesMAC[6];	// 目的地址
-	BYTE 	SrcMAC[6];	// 源地址
+	BYTE	DesMAC[6];	// 目的地址+
+	BYTE 	SrcMAC[6];	// 源地址+
 	WORD	FrameType;	// 帧类型
 } FrameHeader_t;
 typedef struct IPHeader_t {		//IP首部
-	BYTE Ver_HLen;//版本
-	BYTE TOS;//服务类型
-	WORD TotalLen;//总长度
+	BYTE Ver_HLen; //IP协议版本和IP首部长度。高4位为版本，低4位为首部的长度(单位为4bytes)
+	BYTE TOS;//服务类型+
+	WORD TotalLen;//总长度+
 	WORD ID;//标识
 	WORD Flag_Segment;//标志 片偏移
 	BYTE TTL;//生存周期
@@ -36,6 +36,7 @@ typedef struct Data_t {	//包含帧首部和IP首部的数据包
 } Data_t;
 #pragma pack()	//恢复缺省对齐方式
 
+//对IP数据包作分析，IP包的内容在原有物理帧后14字节开始。并提取出相应的字段。
 void ip_protocol_packet_handle(const struct pcap_pkthdr* pkt_header, const u_char* pkt_data)
 {
 	IPHeader_t* IPHeader;
@@ -52,12 +53,12 @@ void ip_protocol_packet_handle(const struct pcap_pkthdr* pkt_header, const u_cha
 	cout << dec << "Version：" << (int)(IPHeader->Ver_HLen >> 4) << endl;
 	cout << "Header Length：";
 	cout << (int)((IPHeader->Ver_HLen & 0x0f) * 4) << " Bytes" << endl;
-	cout << "Tos：" << (int)IPHeader->TOS << endl;
-	cout << "Total Length：" << (int)ntohs(IPHeader->TotalLen) << endl;
-	cout << "Identification：0x" << hex << setw(4) << setfill('0') << ntohs(IPHeader->ID) << endl;
-	cout << "Flags：" << dec << (int)(ntohs(IPHeader->Flag_Segment)) << endl;
-	cout << "Time to live：" << (int)IPHeader->TTL << endl;
-	cout << "Protocol Type： ";
+	cout << "Tos：" << (int)IPHeader->TOS << endl;//服务类型
+	cout << "Total Length：" << (int)ntohs(IPHeader->TotalLen) << endl;//总长度
+	cout << "Identification：0x" << hex << setw(4) << setfill('0') << ntohs(IPHeader->ID) << endl;//标识//ntohs()将一个16位数由网络字节顺序转换为主机字节顺序
+	cout << "Flags：" << dec << (int)(ntohs(IPHeader->Flag_Segment)) << endl;//标志 片偏移
+	cout << "Time to live：" << (int)IPHeader->TTL << endl;//生存周期
+	cout << "Protocol Type： ";//协议
 	switch (IPHeader->Protocol)
 	{
 	case 1:
@@ -73,11 +74,13 @@ void ip_protocol_packet_handle(const struct pcap_pkthdr* pkt_header, const u_cha
 		break;
 	}
 	cout << "(" << (int)IPHeader->Protocol << ")" << endl;
-	cout << "Header checkSum：0x" << hex << setw(4) << setfill('0') << ntohs(IPHeader->Checksum) << endl;
+	cout << "Header checkSum：0x" << hex << setw(4) << setfill('0') << ntohs(IPHeader->Checksum) << endl;//头部校验和
 	cout << "Source：" << sourceIP << endl;
 	cout << "Destination：" << destIP << endl;
 
 }
+
+//首先对物理帧帧作分析，看其中包含的是IP包还是ARP数据包。如果是IP包则转入到IP包处理函数。
 void ethernet_protocol_packet_handle(u_char* param, const struct pcap_pkthdr* pkt_header, const u_char* pkt_data)
 {
 	FrameHeader_t* ethernet_protocol;//以太网协议
