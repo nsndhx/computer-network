@@ -1,2 +1,3 @@
 D:\wtx\计算机网络\计网-EX1\code\server\x64\Debug\server.exe
 D:\wtx\computer-network\计算机网络\计网-EX1\code\server\x64\Debug\server.exe
+D:\wtx\computer-network\计算机网络\Lab\计网-EX1\code\server\x64\Debug\server.exe
