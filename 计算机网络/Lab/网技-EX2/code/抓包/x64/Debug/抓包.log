@@ -1,9 +1,0 @@
-﻿抓包.obj : error LNK2019: 无法解析的外部符号 inet_ntop，函数 "void __cdecl ip_protocol_packet_handle(struct pcap_pkthdr const *,unsigned char const *)" (?ip_protocol_packet_handle@@YAXPEBUpcap_pkthdr@@PEBE@Z) 中引用了该符号
-抓包.obj : error LNK2019: 无法解析的外部符号 pcap_close，函数 main 中引用了该符号
-抓包.obj : error LNK2019: 无法解析的外部符号 pcap_loop，函数 main 中引用了该符号
-抓包.obj : error LNK2019: 无法解析的外部符号 pcap_freealldevs，函数 main 中引用了该符号
-抓包.obj : error LNK2019: 无法解析的外部符号 pcap_open，函数 main 中引用了该符号
-抓包.obj : error LNK2019: 无法解析的外部符号 pcap_findalldevs_ex，函数 main 中引用了该符号
-D:\soft\NPcap\npcap-sdk-1.13\Lib\wpcap.lib : warning LNK4272: 库计算机类型“x86”与目标计算机类型“x64”冲突
-D:\soft\NPcap\npcap-sdk-1.13\Lib\packet.lib : warning LNK4272: 库计算机类型“x86”与目标计算机类型“x64”冲突
-D:\wtx\computer-network\计算机网络\Lab\网技-EX2\code\抓包\x64\Debug\抓包.exe : fatal error LNK1120: 6 个无法解析的外部命令
