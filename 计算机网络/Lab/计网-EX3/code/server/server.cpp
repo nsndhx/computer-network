@@ -65,30 +65,24 @@ void inithandler()
 }
 
 //超时重传
+/*
 void timeouthandler()
 {
-	BOOL flag = false;
 	packet* pkt1 = new packet;
 	pkt1->init_packet();
-	if (ack[curack % WINDOWSIZE] == 2)//快速重传之后还有没被确认的，认为包丢失
+	for (int i = curack; i != curseq; i = (i++) % seqnumber)
 	{
-		for (int i = curack; i != curseq; i = (i++) % seqnumber)
-		{
-			memcpy(pkt1, &buffer[i % WINDOWSIZE], BUFFER);
-			sendto(sockServer, (char*)pkt1, BUFFER, 0, (SOCKADDR*)&addrClient, sizeof(SOCKADDR));
-			cout << "重传第 " << i << " 号数据包" << endl;
-			flag = true;
-		}
+		memcpy(pkt1, &buffer[i % WINDOWSIZE], BUFFER);
+		sendto(sockServer, (char*)pkt1, BUFFER, 0, (SOCKADDR*)&addrClient, sizeof(SOCKADDR));
+		cout << "重传第 " << i << " 号数据包" << endl;
 	}
-	if (flag == true)
-	{
-		ssthresh = cwnd / 2;
-		cwnd = 1;
-		STATE = SLOWSTART;//检测到超时，就回到慢启动状态
-		cout << "==========================检测到超时，回到慢启动阶段============================" << endl;
-		cout << "cwnd=  " << cwnd << "     sstresh= " << ssthresh << endl << endl;
-	}
+	ssthresh = cwnd / 2;
+	cwnd = 1;
+	STATE = SLOWSTART;//检测到超时，就回到慢启动状态
+	cout << "==========================检测到超时，回到慢启动阶段============================" << endl;
+	cout << "cwnd=  " << cwnd << "     sstresh= " << ssthresh << endl << endl;
 }
+*/
 
 
 //差错检测
@@ -177,7 +171,7 @@ int main() {
 					 }
 				 }
 				 if (stage == 2) {
-					 //数据传输完成(第一次挥手)
+					 //确认对方接受成功
 					 if (totalack == totalpacket) {
 						 pkt->init_packet();
 						 pkt->tag = 88;
@@ -194,13 +188,20 @@ int main() {
 						 Sleep(200);
 						 if (waitcount > 20)
 						 {
-							 timeouthandler();
+							 pkt->init_packet();
+							 cout << "sending file" << endl;
+							 memcpy(pkt->data, filepath, strlen(filepath));
+							 pkt->len = strlen(filepath);
+							 send(sockServer, (char*)pkt, sizeof(packet), 0);
+
 							 waitcount = 0;
 						 }
 					 }
 					 else {
 						 //确认应答
-						 if()
+						 if () {
+
+						 }
 					 }
 				 }
 
