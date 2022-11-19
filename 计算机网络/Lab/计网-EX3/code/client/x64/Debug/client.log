@@ -1,6 +1,6 @@
 ﻿  发送端.cpp
-D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\client\发送端.cpp(210,1): warning C4005: “min”: 宏重定义
+D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\client\发送端.cpp(216,1): warning C4005: “min”: 宏重定义
 D:\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(197): message : 参见“min”的前一个定义
-D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\client\发送端.cpp(344,77): warning C4267: “参数”: 从“size_t”转换到“u_long”，可能丢失数据
-D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\client\发送端.cpp(354,20): warning C4244: “初始化”: 从“std::streamoff”转换到“u_long”，可能丢失数据
+D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\client\发送端.cpp(323,77): warning C4267: “参数”: 从“size_t”转换到“u_long”，可能丢失数据
+D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\client\发送端.cpp(333,20): warning C4244: “初始化”: 从“std::streamoff”转换到“u_long”，可能丢失数据
   client.vcxproj -> D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\client\x64\Debug\client.exe

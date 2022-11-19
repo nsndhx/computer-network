@@ -72,7 +72,7 @@ bool acceptClient(SOCKET& socket, SOCKADDR_IN& addr) {
     recvfrom(socket, buffer, sizeof(packetHead), 0, (SOCKADDR*)&addr, &len);
 
     if ((((packetHead*)buffer)->flag & SYN) && (checkPacketSum((u_short*)buffer, sizeof(packetHead)) == 0))
-        cout << "第一次握手成功" << endl;//[SYN_RECV]
+        cout << "第一次握手成功" << endl;
     else {
         cout << "不是第一次握手的数据包" << endl;
         return false;
@@ -89,13 +89,13 @@ bool acceptClient(SOCKET& socket, SOCKADDR_IN& addr) {
     }
     cout << "第二次握手成功" << endl;//[SYN_ACK_SEND]
 
-    u_long mode = 1;//imode=0为阻塞，imode=1为非阻塞
+    u_long mode = 1;//mode=0为阻塞，mode=1为非阻塞
     ioctlsocket(socket, FIONBIO, &mode);//非阻塞
 
     clock_t start = clock(); //开始计时
     while (recvfrom(socket, buffer, sizeof(head), 0, (sockaddr*)&addr, &len) <= 0) {
         if (clock() - start >= MAX_TIME) {
-            cout << "未接受到第三次握手信息，超时重传" << endl;
+            cout << "未接收到第三次握手信息，超时重传" << endl;
             sendto(socket, buffer, sizeof(buffer), 0, (sockaddr*)&addr, len);
             start = clock();
         }
@@ -172,7 +172,6 @@ packet makePacket(int ack) {
 
 u_long recvFSM(char* fileBuffer, SOCKET& socket, SOCKADDR_IN& addr) {
     u_long fileLen = 0;
-    //int stage = 0;
 
     int addrLen = sizeof(addr);
     char* pkt_buffer = new char[sizeof(packet)];
@@ -219,92 +218,6 @@ u_long recvFSM(char* fileBuffer, SOCKET& socket, SOCKADDR_IN& addr) {
         curseq = (curseq + 1) % seqsize;
         curack = (curack + 1) % seqsize;
         index++;
-        //break;
-        /*
-        switch (stage) {
-        case 0:
-            recvfrom(socket, pkt_buffer, sizeof(packet), 0, (SOCKADDR*)&addr, &addrLen);
-
-            memcpy(&pkt, pkt_buffer, sizeof(packetHead));
-
-            if (pkt.head.flag & END) {
-                cout << "文件传输完毕" << endl;
-                packetHead endPacket;
-                endPacket.flag |= ACK;
-                endPacket.checkSum = checkPacketSum((u_short*)&endPacket, sizeof(packetHead));
-                memcpy(pkt_buffer, &endPacket, sizeof(packetHead));
-                sendto(socket, pkt_buffer, sizeof(packetHead), 0, (SOCKADDR*)&addr, addrLen);
-                return fileLen;
-            }
-
-            memcpy(&pkt, pkt_buffer, sizeof(packet));
-
-            if (pkt.head.seq == 1 || checkPacketSum((u_short*)&pkt, sizeof(packet)) != 0) {
-                sendPkt = makePacket(1);
-                memcpy(pkt_buffer, &sendPkt, sizeof(packet));
-                sendto(socket, pkt_buffer, sizeof(packet), 0, (SOCKADDR*)&addr, addrLen);
-                stage = 0;
-                cout << "[SYSTEM]收到重复的" << index - 1 << "号数据包，将其抛弃" << endl;
-                break;
-            }
-
-            //correctly receive the seq0
-            dataLen = pkt.head.bufSize;
-            memcpy(fileBuffer + fileLen, pkt.data, dataLen);
-            fileLen += dataLen;
-
-            //give back ack0
-            sendPkt = makePacket(0);
-            memcpy(pkt_buffer, &sendPkt, sizeof(packet));
-            sendto(socket, pkt_buffer, sizeof(packet), 0, (SOCKADDR*)&addr, addrLen);
-            stage = 1;
-
-            //cout<<"成功收到"<<index<<"号数据包，其长度是"<<dataLen<<endl;
-            index++;
-            break;
-        case 1:
-            recvfrom(socket, pkt_buffer, sizeof(packet), 0, (SOCKADDR*)&addr, &addrLen);
-
-            memcpy(&pkt, pkt_buffer, sizeof(packetHead));
-
-            if (pkt.head.flag & END) {
-                cout << "[SYSTEM]传输完毕" << endl;
-                packetHead endPacket;
-                endPacket.flag |= ACK;
-                endPacket.checkSum = checkPacketSum((u_short*)&endPacket, sizeof(packetHead));
-                memcpy(pkt_buffer, &endPacket, sizeof(packetHead));
-                sendto(socket, pkt_buffer, sizeof(packetHead), 0, (SOCKADDR*)&addr, addrLen);
-                return fileLen;
-            }
-
-            memcpy(&pkt, pkt_buffer, sizeof(packet));
-
-            if (pkt.head.seq == 0 || checkPacketSum((u_short*)&pkt, sizeof(packet)) != 0) {
-                sendPkt = makePacket(0);
-                memcpy(pkt_buffer, &sendPkt, sizeof(packet));
-                sendto(socket, pkt_buffer, sizeof(packet), 0, (SOCKADDR*)&addr, addrLen);
-                stage = 1;
-                cout << "[SYSTEM]收到重复的" << index - 1 << "号数据包，将其抛弃" << endl;
-                break;
-            }
-
-            //correctly receive the seq1
-            dataLen = pkt.head.bufSize;
-            memcpy(fileBuffer + fileLen, pkt.data, dataLen);
-            fileLen += dataLen;
-
-            //give back ack1
-            sendPkt = makePacket(1);
-            memcpy(pkt_buffer, &sendPkt, sizeof(packet));
-            sendto(socket, pkt_buffer, sizeof(packet), 0, (SOCKADDR*)&addr, addrLen);
-            stage = 0;
-
-            //cout<<"成功收到"<<index<<"号数据包，其长度是"<<dataLen<<endl;
-            index++;
-
-            break;
-        }
-        */
     }
 }
 

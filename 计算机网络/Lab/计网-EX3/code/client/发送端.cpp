@@ -17,7 +17,7 @@ using namespace std;
 #define ACK 0x2
 #define FIN 0x4
 #define END 0x8
-#define PORT 7878
+#define PORT 7879
 #define ADDRSRV "127.0.0.1"
 #define MAX_DATA_SIZE 2048
 
@@ -77,6 +77,9 @@ bool connectToServer(SOCKET& socket, SOCKADDR_IN& addr) {
     sendto(socket, buffer, sizeof(head), 0, (sockaddr*)&addr, len);
     cout << "第一次握手成功" << endl;
 
+    u_long mode = 1;
+    ioctlsocket(socket, FIONBIO, &mode);
+
     clock_t start = clock(); //开始计时
     while (recvfrom(socket, buffer, sizeof(head), 0, (sockaddr*)&addr, &len) <= 0) {
         if (clock() - start >= MAX_TIME) {
@@ -94,6 +97,9 @@ bool connectToServer(SOCKET& socket, SOCKADDR_IN& addr) {
         return false;
     }
 
+    mode = 0;
+    ioctlsocket(socket, FIONBIO, &mode);
+
     //服务器建立连接
     if (head.flag & SYN) {
         head.flag = 0;
@@ -107,7 +113,10 @@ bool connectToServer(SOCKET& socket, SOCKADDR_IN& addr) {
     memcpy(buffer, &head, sizeof(head));
     sendto(socket, buffer, sizeof(head), 0, (sockaddr*)&addr, len);
 
-    //等待两个MAX_TIME，如果没有收到消息说明ACK没有丢包
+    mode = 1;
+    ioctlsocket(socket, FIONBIO, &mode);
+
+    //等待两个MAX_TIME，如果收到消息说明ACK没有丢包
     start = clock();
     while (clock() - start <= 2 * MAX_TIME) {
         if (recvfrom(socket, buffer, sizeof(packetHead), 0, (SOCKADDR*)&addr, &len) <= 0)
@@ -118,6 +127,10 @@ bool connectToServer(SOCKET& socket, SOCKADDR_IN& addr) {
         start = clock();
     }
     cout << "三次握手成功" << endl;
+
+    mode = 0;
+    ioctlsocket(socket, FIONBIO, &mode);
+
     cout << "成功与服务器建立连接，准备发送数据" << endl;
     return true;
 }
@@ -136,6 +149,9 @@ bool disConnect(SOCKET& socket, SOCKADDR_IN& addr) {
     else
         return false;
 
+    u_long mode = 1;
+    ioctlsocket(socket, FIONBIO, &mode);
+
     clock_t start = clock();
     while (recvfrom(socket, buffer, sizeof(packetHead), 0, (sockaddr*)&addr, &addrLen) <= 0) {
         if (clock() - start >= MAX_TIME) {
@@ -152,8 +168,8 @@ bool disConnect(SOCKET& socket, SOCKADDR_IN& addr) {
         return false;
     }
 
-    u_long imode = 0;
-    ioctlsocket(socket, FIONBIO, &imode);//阻塞
+    mode = 0;
+    ioctlsocket(socket, FIONBIO, &mode);//阻塞
 
     recvfrom(socket, buffer, sizeof(packetHead), 0, (SOCKADDR*)&addr, &addrLen);
 
@@ -164,8 +180,8 @@ bool disConnect(SOCKET& socket, SOCKADDR_IN& addr) {
         return false;
     }
 
-    imode = 1;
-    ioctlsocket(socket, FIONBIO, &imode);
+    mode = 1;
+    ioctlsocket(socket, FIONBIO, &mode);
 
     closeHead.flag = 0;
     closeHead.flag |= ACK;
