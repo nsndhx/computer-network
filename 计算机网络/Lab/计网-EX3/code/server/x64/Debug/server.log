@@ -1,0 +1,3 @@
+﻿  接收端.cpp
+D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\server\接收端.cpp(309): warning C4715: “recvFSM”: 不是所有的控件路径都返回值
+  server.vcxproj -> D:\wtx\computer-network\计算机网络\Lab\计网-EX3\code\server\x64\Debug\server.exe
