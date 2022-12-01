@@ -1,0 +1,979 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C6387",
+          "message": {
+            "text": "\"sMac\" 可以是 \"0\"。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                },
+                "region": {
+                  "startLine": 107,
+                  "startColumn": 4,
+                  "endLine": 107,
+                  "endColumn": 20
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "GetSelfMac",
+                  "decoratedName": "?GetSelfMac@@YAPEADXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 95,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 96,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 97,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 98,
+                            "startColumn": 12
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 100,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 102,
+                            "startColumn": 7
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 104,
+                            "startColumn": 10
+                          }
+                        },
+                        "message": {
+                          "text": "“sMac”可能为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "essential"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 105,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 107,
+                            "startColumn": 10
+                          }
+                        },
+                        "message": {
+                          "text": "“sMac”是“memset”的输入/输出参数(在 d:\\soft\\visual studio\\2022\\ide\\vc\\tools\\msvc\\14.32.31326\\include\\vcruntime_string.h:63 处声明)"
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 107,
+                            "startColumn": 10
+                          }
+                        },
+                        "message": {
+                          "text": "“sMac”不应为 NULL，因为这与“memset”上的 SAL 批注不一致"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6387",
+          "message": {
+            "text": "\"sMac\" 可以是 \"0\"。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                },
+                "region": {
+                  "startLine": 108,
+                  "startColumn": 4,
+                  "endLine": 108,
+                  "endColumn": 170
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "GetSelfMac",
+                  "decoratedName": "?GetSelfMac@@YAPEADXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 95,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 96,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 97,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 98,
+                            "startColumn": 12
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 100,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 102,
+                            "startColumn": 7
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 104,
+                            "startColumn": 10
+                          }
+                        },
+                        "message": {
+                          "text": "“sMac”可能为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "essential"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 105,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 107,
+                            "startColumn": 10
+                          }
+                        },
+                        "message": {
+                          "text": "“sMac”是“memset”的输入/输出参数(在 d:\\soft\\visual studio\\2022\\ide\\vc\\tools\\msvc\\14.32.31326\\include\\vcruntime_string.h:63 处声明)"
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 108,
+                            "startColumn": 13
+                          }
+                        },
+                        "message": {
+                          "text": "“sMac”是对“sprintf_s”的输入(在 d:\\windows kits\\10\\include\\10.0.19041.0\\ucrt\\stdio.h:1815 处声明)"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 108,
+                            "startColumn": 13
+                          }
+                        },
+                        "message": {
+                          "text": "“sMac”不应为 NULL，因为这与“sprintf_s”上的 SAL 批注不一致"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "返回值被忽略: “scanf”。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                },
+                "region": {
+                  "startLine": 297,
+                  "startColumn": 2,
+                  "endLine": 297,
+                  "endColumn": 15
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "main",
+                  "decoratedName": "main",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6011",
+          "message": {
+            "text": "取消对 NULL 指针“d”的引用。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                },
+                "region": {
+                  "startLine": 285,
+                  "startColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "main",
+                  "decoratedName": "main",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "codeFlows": [
+            {
+              "threadFlows": [
+                {
+                  "locations": [
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 224,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 225,
+                            "startColumn": 13
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 226,
+                            "startColumn": 15
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 227,
+                            "startColumn": 6
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 228,
+                            "startColumn": 6
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 229,
+                            "startColumn": 10
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 230,
+                            "startColumn": 7
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 236,
+                            "startColumn": 4
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 244,
+                            "startColumn": 9
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 244,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 246,
+                            "startColumn": 30
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 247,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 248,
+                            "startColumn": 27
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 244,
+                            "startColumn": 33
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 244,
+                            "startColumn": 22
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 255,
+                            "startColumn": 8
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 261,
+                            "startColumn": 53
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 262,
+                            "startColumn": 6
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 265,
+                            "startColumn": 15
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 274,
+                            "startColumn": 18
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 274,
+                            "startColumn": 29
+                          }
+                        }
+                      },
+                      "importance": "unimportant"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 274,
+                            "startColumn": 52
+                          }
+                        },
+                        "message": {
+                          "text": "“d”可能为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "essential"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 274,
+                            "startColumn": 29
+                          }
+                        },
+                        "message": {
+                          "text": "退出此循环(“i<inum-1”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 275,
+                            "startColumn": 9
+                          }
+                        },
+                        "message": {
+                          "text": "“d”是“ifprint”的输入/输出参数(在第 56 行中声明)"
+                        }
+                      },
+                      "kinds": [
+                        "declaration"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 285,
+                            "startColumn": 5
+                          }
+                        },
+                        "message": {
+                          "text": "跳过此分支(假定“<分支条件>”为 false)"
+                        }
+                      },
+                      "kinds": [
+                        "branch"
+                      ],
+                      "importance": "important"
+                    },
+                    {
+                      "location": {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+                          },
+                          "region": {
+                            "startLine": 285,
+                            "startColumn": 5
+                          }
+                        },
+                        "message": {
+                          "text": "已取消对“d”的引用，但可能仍为 NULL"
+                        }
+                      },
+                      "kinds": [
+                        "usage"
+                      ],
+                      "importance": "essential"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.32.31332.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///D:/wtx/computer-network/计算机网络/Lab/网技-EX5/code/路由.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "d20176cf1c97a9fb123c312991c1012d178e77809568524a0d241198a48c6686"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/wtx/computer-network/计算机网络/lab/网技-ex5/code/hhh.h"
+          },
+          "hashes": {
+            "sha-256": "d0f4f61803ba382ffdb294145d5a9da0d6ce16506d9962916cb21d9d6b51d8bd"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/soft/npcap/npcap-sdk-1.13/include/pcap.h"
+          },
+          "hashes": {
+            "sha-256": "1d133ea35591daa552a1397ae5576b24e303e0cac8f806c41222c3fd881efdb7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/soft/npcap/npcap-sdk-1.13/include/pcap/pcap.h"
+          },
+          "hashes": {
+            "sha-256": "a9bb2080a437da831e309eb0755d41e323b75543a16a2f6f32bb5546437cfe13"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/soft/npcap/npcap-sdk-1.13/include/pcap/funcattrs.h"
+          },
+          "hashes": {
+            "sha-256": "d65dfe5184ea15c84a44d57259d3a7e15ea7d862350a0e8133f6730b53a3738c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/soft/npcap/npcap-sdk-1.13/include/pcap/compiler-tests.h"
+          },
+          "hashes": {
+            "sha-256": "0cceec0986c127dd5404954627db80d2e8bfcec3d06d913a639630e7e464af23"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/soft/npcap/npcap-sdk-1.13/include/pcap/pcap-inttypes.h"
+          },
+          "hashes": {
+            "sha-256": "53682ab16911dbb0f4783ca6b896fb9404b45f98d09f24a27f54c41c4b7b3ebb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/soft/npcap/npcap-sdk-1.13/include/pcap/socket.h"
+          },
+          "hashes": {
+            "sha-256": "132d0065b6bb7294d0d5619b385ed6e7f8eb902c509b8fa126edefa97265f37f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/soft/npcap/npcap-sdk-1.13/include/pcap/bpf.h"
+          },
+          "hashes": {
+            "sha-256": "f487a8e740303189cbe9572fc760966648e484def73efc7850062775666d89ce"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/soft/npcap/npcap-sdk-1.13/include/pcap/dlt.h"
+          },
+          "hashes": {
+            "sha-256": "7f643ecd316a5a2f50577b5380e35486824fdafb0c52c6c2f8d073f884625b81"
+          }
+        }
+      ]
+    }
+  ]
+}

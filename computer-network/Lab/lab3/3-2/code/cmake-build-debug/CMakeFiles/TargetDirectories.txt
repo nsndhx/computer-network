@@ -1,0 +1,4 @@
+D:/wtx/computer-network/computer-network/Lab/lab3/3-2/code/cmake-build-debug/CMakeFiles/server.dir
+D:/wtx/computer-network/computer-network/Lab/lab3/3-2/code/cmake-build-debug/CMakeFiles/client.dir
+D:/wtx/computer-network/computer-network/Lab/lab3/3-2/code/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/wtx/computer-network/computer-network/Lab/lab3/3-2/code/cmake-build-debug/CMakeFiles/rebuild_cache.dir

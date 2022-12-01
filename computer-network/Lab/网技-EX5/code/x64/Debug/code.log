@@ -1,0 +1,11 @@
+﻿  路由.cpp
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(19,2): warning C4091: “typedef ”: 没有声明变量时忽略“Ethernet_head”的左侧
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(31,2): warning C4091: “typedef ”: 没有声明变量时忽略“ArpPacket”的左侧
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(132,17): warning C4101: “sendbuf”: 未引用的局部变量
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(226,15): warning C4101: “a”: 未引用的局部变量
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(19,2): warning C4091: “typedef ”: 没有声明变量时忽略“Ethernet_head”的左侧
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(31,2): warning C4091: “typedef ”: 没有声明变量时忽略“ArpPacket”的左侧
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(107): warning C6387: "sMac" 可以是 "0"。
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(108): warning C6387: "sMac" 可以是 "0"。
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(297): warning C6031: 返回值被忽略: “scanf”。
+D:\wtx\computer-network\计算机网络\Lab\网技-EX5\code\路由.cpp(285): warning C6011: 取消对 NULL 指针“d”的引用。

@@ -1,0 +1,3 @@
+"D:\soft\clion\CLion 2022.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\server.dir/objects.a
+D:\soft\winGW\mingw64\bin\ar.exe qc CMakeFiles\server.dir/objects.a @CMakeFiles\server.dir\objects1.rsp
+D:\soft\winGW\mingw64\bin\g++.exe -g -Wl,--stack,4194304 -Wl,--whole-archive CMakeFiles\server.dir/objects.a -Wl,--no-whole-archive -o server.exe -Wl,--out-implib,libserver.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\server.dir\linklibs.rsp

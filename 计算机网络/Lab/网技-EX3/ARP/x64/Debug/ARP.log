@@ -1,6 +1,0 @@
-﻿  ARP.cpp
-D:\wtx\computer-network\计算机网络\Lab\网技-EX3\ARP\ARP.cpp(19,2): warning C4091: “typedef ”: 没有声明变量时忽略“Ethernet_head”的左侧
-D:\wtx\computer-network\计算机网络\Lab\网技-EX3\ARP\ARP.cpp(31,2): warning C4091: “typedef ”: 没有声明变量时忽略“ArpPacket”的左侧
-D:\wtx\computer-network\计算机网络\Lab\网技-EX3\ARP\ARP.cpp(132,17): warning C4101: “sendbuf”: 未引用的局部变量
-D:\wtx\computer-network\计算机网络\Lab\网技-EX3\ARP\ARP.cpp(226,15): warning C4101: “a”: 未引用的局部变量
-  ARP.vcxproj -> D:\wtx\computer-network\计算机网络\Lab\网技-EX3\ARP\x64\Debug\ARP.exe
