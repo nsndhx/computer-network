@@ -1,16 +1,23 @@
-//
-// Created by LEGION on 2022-11-09.
-//
+#include <iostream>
+#include <WINSOCK2.h>
+#include <ctime>
+#include <fstream>
+#include <windows.h>
+using namespace std;
+
+#pragma comment(lib, "ws2_32.lib")  //╪сть ws2_32.dll
+#pragma comment(lib, "winmm.lib")
+#pragma warning(disable : 4996)
 
 #define SYN 0x1
 #define ACK 0x2
 #define FIN 0x4
 #define END 0x8
-
 #define MAX_DATA_SIZE 8192
 #define MAX_SEQ 0xffff
-using namespace std;
 #define OUTPUT_LOG
+#define min(a, b) a>b?b:a
+#define max(a, b) a>b?a:b
 
 struct PacketHead {
     u_int seq;

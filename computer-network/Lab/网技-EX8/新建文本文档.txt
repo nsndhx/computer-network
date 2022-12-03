@@ -1,0 +1,14 @@
+ip local pool mypool 192.168.1.100 192.168.1.200
+
+ip unnumber gig0/0
+peer default ip address pool mypool
+ppp authentication chap myPPPoE
+exit
+
+bba-group pppoe mybbagroup
+virtual-template 1
+eixt
+
+interface gig0/0
+pppoe enable group mybbagroup
+exit
