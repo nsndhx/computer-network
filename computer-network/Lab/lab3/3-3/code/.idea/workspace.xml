@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="code" targetName="client" />
+      <config projectName="code" targetName="server" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a59cb32d-20ac-4d4f-8cb3-510f1e7c1d29" name="变更" comment="">
+      <change beforePath="$PROJECT_DIR$/../../3-2/code/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../../3-2/code/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/2011428-密码科学与技术-王天行-第5次试验报告.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/ARP/FileContentIndex/1ebe3986-05bf-4f33-9987-9b31a5c89df2.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/ARP/FileContentIndex/39f1e9cf-2d3e-4844-9258-1db361d63438.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/ARP/FileContentIndex/d86791a4-712f-49a1-bb4e-1a71c2e3067e.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/ARP/FileContentIndex/read.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/ARP/v17/.suo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/ARP/v17/Browse.VC.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/ARP/v17/ipch/AutoPCH/50ca1e89f31223c9/HHH.ipch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/ARP/v17/ipch/AutoPCH/cb907c9f12055529/ARP.ipch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/code/FileContentIndex/082363e0-855f-4680-b4f5-cb184c69cb79.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/code/FileContentIndex/9088c78a-fa40-404c-ba7a-e296115824f8.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/code/FileContentIndex/e78b973c-b41a-468d-b1f6-db7ceeb6ed9f.vsidx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/code/FileContentIndex/read.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/code/v17/.suo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/code/v17/Browse.VC.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/.vs/code/v17/ipch/AutoPCH/3b63081223550df4/路由.ipch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/code.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/code.vcxproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/code.vcxproj.filters" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/code.vcxproj.user" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/hhh.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/CodeAnalysisResultManifest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/NativeCodeAnalysis.read.1.tlog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.exe.lastcodeanalysissucceeded" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.exe.recipe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.ilk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.tlog/CL.command.1.tlog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.tlog/CL.read.1.tlog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.tlog/CL.write.1.tlog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.tlog/code.lastbuildstate" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.tlog/link.command.1.tlog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.tlog/link.read.1.tlog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.tlog/link.write.1.tlog" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.tlog/unsuccessfulbuild" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/code.vcxproj.FileListAbsolute.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/vc.nativecodeanalysis.all.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/vc143.idb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/vc143.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/路由.nativecodeanalysis.sarif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/路由.nativecodeanalysis.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/x64/Debug/路由.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX5/code/路由.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX7/拓展ACL.pkt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../网技-EX7/拓展ACL.pkt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX7/标准ACL.pkt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../网技-EX7/标准ACL.pkt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../网技-EX8/pppoe.pkt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../网技-EX8/pppoe.pkt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2022" />
+    <option name="minorVersion" value="2.4" />
+  </component>
+  <component name="ProjectId" id="2IGkuSgmIxfrz7viQbrrZCMqbsT" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/wtx/computer-network/computer-network/Lab/lab3/3-3/code&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C/C++&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wtx\computer-network\computer-network\Lab\lab3\3-2\code\test\in" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake 应用程序.client">
+    <configuration name="client" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="code" TARGET_NAME="client" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="code" RUN_TARGET_NAME="client">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="server" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="code" TARGET_NAME="server" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="code" RUN_TARGET_NAME="server">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake 应用程序.client" />
+      <item itemvalue="CMake 应用程序.server" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="a59cb32d-20ac-4d4f-8cb3-510f1e7c1d29" name="变更" comment="" />
+      <created>1669815530032</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1669815530032</updated>
+      <workItem from="1669815531873" duration="347000" />
+      <workItem from="1669815906585" duration="774000" />
+      <workItem from="1669876876928" duration="5367000" />
+      <workItem from="1669891801330" duration="310000" />
+      <workItem from="1669892442610" duration="3921000" />
+      <workItem from="1669896419330" duration="233000" />
+      <workItem from="1669896805183" duration="659000" />
+      <workItem from="1669957898056" duration="1789000" />
+      <workItem from="1669959716768" duration="2215000" />
+      <workItem from="1669962026086" duration="40000" />
+      <workItem from="1669962778382" duration="21245000" />
+      <workItem from="1670031047934" duration="915000" />
+      <workItem from="1670660351698" duration="7112000" />
+      <workItem from="1671068419685" duration="12935000" />
+      <workItem from="1671276725291" duration="611000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
