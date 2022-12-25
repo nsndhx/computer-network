@@ -1,0 +1,3 @@
+"D:\soft\clion\CLion 2022.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\client.dir/objects.a
+D:\soft\winGW\mingw64\bin\ar.exe qc CMakeFiles\client.dir/objects.a @CMakeFiles\client.dir\objects1.rsp
+D:\soft\winGW\mingw64\bin\g++.exe -g -static -Wl,--whole-archive CMakeFiles\client.dir/objects.a -Wl,--no-whole-archive -o client.exe -Wl,--out-implib,libclient.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\client.dir\linklibs.rsp

@@ -1,315 +1,225 @@
 #include "hhh.h"
-#include <IPHlpApi.h>
-#pragma comment(lib,"wpcap.lib")
-#pragma comment(lib,"ws2_32.lib")
-#pragma comment(lib,"IPHlpApi.lib")    // 发送ARP报文要用的静态库,取MAC用
-#define ARP_REQUEST  0x0001        // ARP请求
-#define ARP_REPLY    0x0002           // ARP应答
-#define IPTOSBUFFERS 12
-#define HOSTNUM      255      // 主机数量
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+#define HAVE_REMOTE
+#define ETH_ARP 0x0806
+#define ARP_HARDWARE 1
+#define ETH_IP 0x0800
+#define ARP_REQUEST 1
+#define ARP_REPLY 2
+#define MAX_WORK_TIME 60
+
 
 #pragma warning(disable:4996)
-//#pragma warning(disable:4700)
 
-char* myBroad;
-unsigned char* m_MAC = new unsigned char[6];
-char* m_IP = (char*)"10.130.86.122";
-char* m_mask;
-char d_IP[20];
-//char* d_IP = (char*)"192.168.137.1";
-unsigned char* d_MAC = new unsigned char[6];
-bool flag;
+char** myip = (char**)malloc(sizeof(char*) * 2);
+char** mynetmask = (char**)malloc(sizeof(char*) * 2);
+char** mynet = (char**)malloc(sizeof(char*) * 2);
 
-char* iptos(u_long in) {
-	static char output[IPTOSBUFFERS][3 * 4 + 3 + 1];
-	static short which;
-	u_char* p;
+BYTE mymac[2][6];
+BYTE broadcastmac[6];
+pcap_if_t* alldevs;
+pcap_t* adhandle;
+pcap_addr_t myaddr[2];
 
-	p = (u_char*)&in;
-	which = (which + 1 == IPTOSBUFFERS ? 0 : which + 1);
-	sprintf(output[which], "%d.%d.%d.%d", p[0], p[1], p[2], p[3]);
-	return output[which];
-}
 
-// 打印所有可用信息
-void ifprint(pcap_if_t* d) {
-	pcap_addr_t* a;
-
-	/* IP addresses */
-	for (a = d->addresses; a; a = a->next)
-	{
-		printf("\tAddress Family: #%d\n", a->addr->sa_family);
-		switch (a->addr->sa_family)
-		{
-		case AF_INET:
-			printf("\tAddress Family Name: AF_INET\n");
-			if (a->addr)
-			{
-				m_IP = iptos(((struct sockaddr_in*)a->addr)->sin_addr.s_addr);
-				printf("\tIP Address: %s\n", m_IP);
-			}
-			if (a->netmask)
-			{
-				m_mask = iptos(((struct sockaddr_in*)a->netmask)->sin_addr.s_addr);
-				printf("\tNetmask: %s\n", m_mask);
-			}
-
-			if (a->broadaddr)
-			{
-				myBroad = iptos(((struct sockaddr_in*)a->broadaddr)->sin_addr.s_addr);
-				printf("\tBroadcast Address: %s\n", myBroad);
-			}
-			if (a->dstaddr)
-				printf("\tDestination Address: %s\n", iptos(((struct sockaddr_in*)a->dstaddr)->sin_addr.s_addr));
-			break;
-		default:
-			//printf("\tAddress Family Name: Unknown\n");
-			break;
-		}
-	}
-	printf("\n");
-}
-
-char* GetSelfMac() {
-	ULONG MacAddr[2] = { 0 };    // Mac地址长度6字节
-	ULONG uMacSize = 6;
-	DWORD dwRet = SendARP(inet_addr(m_IP), 0, &MacAddr, &uMacSize);
-	if (dwRet == NO_ERROR)
-	{
-		BYTE* bPhyAddr = (BYTE*)MacAddr;
-
-		if (uMacSize)
-		{
-			char* sMac = (char*)malloc(sizeof(char) * 18);
-			int n = 0;
-
-			memset(sMac, 0, 18);
-			sprintf_s(sMac, (size_t)18, "%.2X-%.2X-%.2X-%.2X-%.2X-%.2X", (int)bPhyAddr[0], (int)bPhyAddr[1], (int)bPhyAddr[2], (int)bPhyAddr[3], (int)bPhyAddr[4], (int)bPhyAddr[5]);
-			return sMac;
-		}
-		else
-		{
-			printf("Mac地址获取失败！\n");
-		}
-	}
-	else
-	{
-		printf("ARP报文发送失败:%d\n", dwRet);
-	}
-	return NULL;
-}
-
-void SendArpPacket(pcap_t* adhandle) {
-	char* ip = m_IP;
-	unsigned char* mac = m_MAC;
-	char* netmask = m_mask;
-	printf("ip_mac:%02x-%02x-%02x-%02x-%02x-%02x\n", mac[0], mac[1], mac[2],
-		mac[3], mac[4], mac[5]);
-	printf("自身的IP地址为:%s\n", ip);
-	printf("地址掩码NETMASK为:%s\n", netmask);
-	printf("\n");
-	unsigned char* sendbuf; //arp包结构大小
-	ArpPacket arp;
-	
-	//赋值MAC地址
-	memset(arp.ed.DesMAC, 0xff, 6);       //目的地址为全为广播地址
-	printf("Des_MAC:%02x-%02x-%02x-%02x-%02x-%02x\n", arp.ed.DesMAC[0], arp.ed.DesMAC[1], arp.ed.DesMAC[2],
-		arp.ed.DesMAC[3], arp.ed.DesMAC[4], arp.ed.DesMAC[5]);
-	memcpy(arp.ed.SrcMAC, mac, 6);
-	printf("Src_MAC:%02x-%02x-%02x-%02x-%02x-%02x\n", arp.ed.SrcMAC[0], arp.ed.SrcMAC[1], arp.ed.SrcMAC[2],
-		arp.ed.SrcMAC[3], arp.ed.SrcMAC[4], arp.ed.SrcMAC[5]);
-	memcpy(arp.SourceMacAdd, mac, 6);
-	printf("SourceMacAdd:%02x-%02x-%02x-%02x-%02x-%02x\n", arp.SourceMacAdd[0], arp.SourceMacAdd[1], arp.SourceMacAdd[2],
-		arp.SourceMacAdd[3], arp.SourceMacAdd[4], arp.SourceMacAdd[5]);
-	memset(arp.DestMacAdd, 0x00, 6);
-	printf("DestMacAdd:%02x-%02x-%02x-%02x-%02x-%02x\n", arp.DestMacAdd[0], arp.DestMacAdd[1], arp.DestMacAdd[2],
-		arp.DestMacAdd[3], arp.DestMacAdd[4], arp.DestMacAdd[5]);
-	arp.ed.FrameType = htons(0x0806);//帧类型为ARP3
-	cout << "EthTyte:" << arp.ed.FrameType << endl;
-	arp.HardwareType = htons(0x0001);
-	cout << "HardwareType:" << arp.HardwareType << endl;
-	arp.ProtocolType = htons(0x0800);
-	cout << "ProtocolType:" << arp.ProtocolType << endl;
-	arp.HardwareAddLen = 6;
-	arp.ProtocolAddLen = 4;
-	arp.SourceIpAdd = inet_addr(ip); //请求方的IP地址为自身的IP地址
-	cout << "SourceIpAss:" << arp.SourceIpAdd << endl;
-	arp.OperationField = htons(0x0001);
-	cout << "OperationField:" << arp.OperationField << endl;
-	arp.DestIpAdd = inet_addr(d_IP);
-	cout << "DestIpAdd:" << arp.DestIpAdd << endl;
-	u_char* a = (u_char*)&arp;
-	//如果发送成功
-	cout << "a:";
-	for (int i = 0; i < 48; i++) {
-		printf("% 02x ", a[i]);
-	}
-	cout << endl;
-	if (pcap_sendpacket(adhandle, (u_char*)&arp, sizeof(ArpPacket)) == 0) {
-		printf("\nPacketSend succeed\n");
-	}
-	else {
-		printf("PacketSendPacket in getmine Error: %d\n", GetLastError());
-	}
-	flag = TRUE;
+void iptostr(u_long addr, char* str)
+{
+	static char str1[3 * 4 + 3 + 1];//3 bytes of numbers and 3 dots and a '\0'
+	u_char* p = (u_char*)&addr;
+	sprintf_s(str1, "%d.%d.%d.%d", p[0], p[1], p[2], p[3]);
+	memcpy(str, str1, 16);
 	return;
 }
 
-//(pcap_t *adhandle)
-int GetLivePC(pcap_t* adhandle) {
-	//gparam *gpara = (gparam *)lpParameter;
-	//pcap_t *adhandle = gpara->adhandle;
-	int res;
-	unsigned char Mac[6];
-	struct pcap_pkthdr* pkt_header;
-	const u_char* pkt_data;
-	while ((res = pcap_next_ex(adhandle, &pkt_header, &pkt_data)) >= 0) {
-		//cout << "ETH_ARP:" << *(unsigned short*)(pkt_data + 12) << "        " << htons(0x0806) << endl;
-		if (*(unsigned short*)(pkt_data + 12) == htons(0x0806)) {
-			ArpPacket* recv = (ArpPacket*)pkt_data;
-			//cout << "ARP_REPLY:" << *(unsigned short*)(pkt_data + 20) << "        " << htons(ARP_REPLY) << endl;
-			if (*(unsigned short*)(pkt_data + 20) == htons(ARP_REPLY)) {
-				printf("sourceIP地址:%d.%d.%d.%d   MAC地址:",
-					*(unsigned char*)(pkt_data + 28) & 255,
-					*(unsigned char*)(pkt_data + 28 + 1) & 255,
-					*(unsigned char*)(pkt_data + 28 + 2) & 255,
-					*(unsigned char*)(pkt_data + 28 + 3) & 255);
-				for (int i = 0; i < 6; i++) {
-					Mac[i] = *(unsigned char*)(pkt_data + 22 + i);
-					printf("%02x ", Mac[i]);
+//路由表项
+class RouteTableItem {
+public:
+	DWORD netmask;
+	DWORD dstnet;//destination net
+	DWORD nextip;
+	int type;////0为直接连接，1为用户添加
+	RouteTableItem* nextitem;//采用链表形式存储
+	RouteTableItem() {
+		memset(this, 0, sizeof(*this));
+	}
+	RouteTableItem(DWORD netmask, DWORD dstnet, int type, DWORD nextip = 0) {
+		this->netmask = netmask;
+		this->dstnet = dstnet;
+		this->nextip = nextip;
+		this->type = type;
+	}
+	void print() {
+		char* str = (char*)malloc(sizeof(char) * 16);
+		iptostr(netmask, str);
+		printf("Netmask: %s\n", str);
+		iptostr(dstnet, str);
+		printf("Destination: %s\n", str);
+		iptostr(nextip, str);
+		printf("Next ip: %s\n", str);
+		printf("Type: %d\n", type);
+	}
+};
+//路由表
+class RouteTable {
+public:
+	RouteTableItem* head;
+	RouteTableItem* tail;
+	int num;//how many items
+	RouteTable() {
+		DWORD netmask = inet_addr(mynetmask[0]);
+		DWORD dstnet = (inet_addr(myip[0])) & (inet_addr(mynetmask[0]));
+		int type = 0;
+		head = new RouteTableItem(netmask, dstnet, type);
+		tail = new RouteTableItem;//empty
+		head->nextitem = tail;
+		RouteTableItem* tmp = new RouteTableItem;
+		tmp->dstnet = (inet_addr(myip[1])) & (inet_addr(mynetmask[1]));
+		tmp->netmask = inet_addr(mynetmask[1]);
+		tmp->type = 0;
+		//tmp->nextip = (inet_addr(myip[1]));
+		add(tmp);
+		num = 2;//2 ip
+	}
+	//添加表项（直接投递在最前，前缀长的在前面）
+	void add(RouteTableItem* newitem) {
+		num++;
+		//directly send
+		if (newitem->type == 0) {
+			newitem->nextitem = head->nextitem;//tail
+			head->nextitem = newitem;
+			return;
+		}
+		//add according to the len of the netmask
+		RouteTableItem* cur = head;
+		while (cur->nextitem != tail) {
+			if (cur->nextitem->type != 0 && cur->nextitem->netmask < newitem->netmask) {
+				break;
+			}
+			cur = cur->nextitem;
+		}
+		//insert between cur and cur->next
+		newitem->nextitem = cur->nextitem;
+		cur->nextitem = newitem;
+	}
+	//删除表项
+	void remove(int index) {
+		if (index >= num) {
+			printf("路由表项%d超过范围!\n",index);
+			return;
+		}
+		if (index == 0) { //delete head
+			if (head->type == 0) {
+				printf("该路由表项不可删除!\n");
+			}
+			else {
+				head = head->nextitem;
+			}
+			return;
+		}
+		RouteTableItem* cur = head;
+		int i = 0;
+		while (i < index - 1 && cur->nextitem != tail) { //delete cur->next
+			i++;
+			cur = cur->nextitem;
+		}
+		if (cur->nextitem->type == 0) {
+			printf("该路由表项不可删除!\n");
+		}
+		else {
+			cur->nextitem = cur->nextitem->nextitem;
+		}
+
+	}
+	//路由表打印
+	void print() {
+		printf("Route Table:\n");
+		RouteTableItem* cur = head;
+		int i = 1;
+		while (cur != tail) {
+			printf("No.%d:\n", i);
+			cur->print();
+			cur = cur->nextitem;
+			i++;
+		}
+	}
+	//查找，最长前缀,返回下一跳的ip
+	DWORD lookup(DWORD dstip) {
+		DWORD res;
+		RouteTableItem* cur = head;
+		while (cur != tail) {
+			//printf("xxx\n");
+			res = dstip & cur->netmask;
+			//printf("res:%d\n", res);
+			//printf("dstip: %d\n", dstip);
+			//printf("cur->dstnet: %d\n", cur->dstnet);
+			if (res == cur->dstnet) {
+				if (cur->type != 0) {
+					return cur->nextip;//need forward
 				}
-				printf("\n");
-				printf("destinationIP地址:%d.%d.%d.%d   MAC地址:",
-					*(unsigned char*)(pkt_data + 38) & 255,
-					*(unsigned char*)(pkt_data + 38 + 1) & 255,
-					*(unsigned char*)(pkt_data + 38 + 2) & 255,
-					*(unsigned char*)(pkt_data + 38 + 3) & 255);
-				for (int i = 0; i < 6; i++) {
-					Mac[i] = *(unsigned char*)(pkt_data + 32 + i);
-					printf("%02x ", Mac[i]);
+				else {
+					return 0;//directly send
 				}
-				printf("\n");
-				return 0;
+			}
+			cur = cur->nextitem;
+		}
+		printf("没有找到对应的路由表项!\n");
+		return -1;
+	}
+};
+
+class ARPTableItem {
+public:
+	DWORD IP;
+	BYTE MAC[6];
+	static int num;
+	ARPTableItem() {
+	}
+	ARPTableItem(DWORD IP, BYTE MAC[6]) {
+		this->IP = IP;
+		for (int i = 0; i < 6; i++) {
+			this->MAC[i] = MAC[i];
+		}
+		num = 0;
+	}
+	void print() {
+		char* str = (char*)malloc(sizeof(char) * 16);
+		iptostr(IP, str);
+		printf("IP: %s\n", str);
+		printf("MAC: %02x-%02x-%02x-%02x-%02x-%02x\n", MAC[0], MAC[1], MAC[2],
+			MAC[3], MAC[4], MAC[5]);
+	}
+	//插入
+	static void insert(DWORD IP, BYTE MAC[6]) {
+		arptable[num] = ARPTableItem(IP, MAC);
+		num++;
+	}
+	//查询
+	static bool lookup(DWORD ip, BYTE mac[6]) {
+		memset(mac, 0, sizeof(mac));
+		int i = 0;
+		for (i; i < num; i++) {
+			if (arptable[i].IP == ip) {
+				for (int j = 0; j < 6; j++) {
+					mac[j] = arptable[i].MAC[j];
+				}
+				return true;
 			}
 		}
-		Sleep(10);
+		if (i == num) {
+			printf("Error: no match ARP item!\n");
+		}
+		return false;
 	}
-	return 0;
-}
 
-//对IP数据包作分析，IP包的内容在原有物理帧后14字节开始。并提取出相应的字段。
-void ip_protocol_packet_handle(const struct pcap_pkthdr* pkt_header, const u_char* pkt_data)
-{
-	IPHeader_t* IPHeader;
-	IPHeader = (IPHeader_t*)(pkt_data + 14);
-	sockaddr_in source, dest;
-	char sourceIP[MAX_ADDR_LEN], destIP[MAX_ADDR_LEN];
-	char str[16];
-	source.sin_addr.s_addr = IPHeader->SrcIP;
-	dest.sin_addr.s_addr = IPHeader->DstIP;
-	strncpy_s(sourceIP, inet_ntop(AF_INET, &source.sin_addr, str, 16), MAX_ADDR_LEN);
-	strncpy_s(destIP, inet_ntop(AF_INET, &dest.sin_addr, str, 16), MAX_ADDR_LEN);
+}arptable[100];
+int ARPTableItem::num = 0;
 
-	//开始输出
-	cout << dec << "Version：" << (int)(IPHeader->Ver_HLen >> 4) << endl;
-	cout << "Header Length：";
-	cout << (int)((IPHeader->Ver_HLen & 0x0f) * 4) << " Bytes" << endl;
-	cout << "Tos：" << (int)IPHeader->TOS << endl;//服务类型
-	cout << "Total Length：" << (int)ntohs(IPHeader->TotalLen) << endl;//总长度
-	cout << "Identification：0x" << hex << setw(4) << setfill('0') << ntohs(IPHeader->ID) << endl;//标识//ntohs()将一个16位数由网络字节顺序转换为主机字节顺序
-	cout << "Flags：" << dec << (int)(ntohs(IPHeader->Flag_Segment)) << endl;//标志 片偏移
-	cout << "Time to live：" << (int)IPHeader->TTL << endl;//生存周期
-	cout << "Protocol Type： ";//协议
-	switch (IPHeader->Protocol)
-	{
-	case 1:
-		cout << "ICMP";
-		break;
-	case 6:
-		cout << "TCP";
-		break;
-	case 17:
-		cout << "UDP";
-		break;
-	default:
-		break;
-	}
-	cout << "(" << (int)IPHeader->Protocol << ")" << endl;
-	cout << "Header checkSum：0x" << hex << setw(4) << setfill('0') << ntohs(IPHeader->Checksum) << endl;//头部校验和
-	cout << "Source：" << sourceIP << endl;
-	cout << "Destination：" << destIP << endl;
+//初始化
+void get_device() {
 
-}
-
-//首先对物理帧帧作分析，看其中包含的是IP包还是ARP数据包。如果是IP包则转入到IP包处理函数。
-void ethernet_protocol_packet_handle(u_char* param, const struct pcap_pkthdr* pkt_header, const u_char* pkt_data)
-{
-	FrameHeader_t* ethernet_protocol;//以太网协议
-	u_short ethernet_type;			//以太网类型
-	u_char* mac_string;				//以太网地址
-
-	//获取以太网数据内容
-	ethernet_protocol = (FrameHeader_t*)pkt_data;
-	ethernet_type = ntohs(ethernet_protocol->FrameType);
-
-	cout << "==============Ethernet Protocol=================" << endl;
-
-	//以太网目标地址
-	mac_string = ethernet_protocol->DesMAC;
-
-	cout << "Destination Mac Address： ";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[0] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[1] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[2] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[3] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[4] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[5] << endl;
-
-	//以太网源地址
-	mac_string = ethernet_protocol->SrcMAC;
-
-	cout << "Source Mac Address： ";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[0] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[1] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[2] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[3] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[4] << ":";
-	cout << hex << setw(2) << setfill('0') << (u_int)mac_string[5] << endl;
-
-	cout << "Ethernet type： ";
-	switch (ethernet_type)
-	{
-	case 0x0800:
-		cout << "IP";
-		break;
-	case 0x0806:
-		cout << "ARP";
-		break;
-	case 0x0835:
-		cout << "RARP";
-		break;
-	default:
-		cout << "Unknown Protocol";
-		break;
-	}
-	cout << " 0x" << setw(4) << setfill('0') << ethernet_type << endl;
-
-	//进入IPHeader处理函数
-	if (ethernet_type == 0x0800)
-	{
-		ip_protocol_packet_handle(pkt_header, pkt_data);
-	}
-}
-int main() {
-	//本机接口和IP地址的获取
-	pcap_if_t* alldevs; 	               //指向设备链表首部的指针
-	pcap_if_t* d;
-	pcap_addr_t* a;
-	int i = 0;
-	int inum = 0;
-	pcap_t* adhandle;
-	char errbuf[PCAP_ERRBUF_SIZE];	//错误信息缓冲区
-	//获得本机的设备列表
+	char errbuf[PCAP_ERRBUF_SIZE];
+	//获取网卡列表
 	if (pcap_findalldevs_ex(PCAP_SRC_IF_STRING, 	//获取本机的接口设备
 		NULL,			       //无需认证
 		&alldevs, 		       //指向设备列表首部
@@ -317,76 +227,411 @@ int main() {
 	) == -1)
 	{
 		//错误处理
-		cout << "获取本机设备错误:" << errbuf << endl;
+		printf("Error: find devices failed! %s\n", errbuf);
 		pcap_freealldevs(alldevs);
-		return 0;
 	}
-	//显示接口列表
-	for (d = alldevs; d != NULL; d = d->next)
-	{
-		cout << dec << ++i << ": " << d->name; //利用d->name获取该网络接口设备的名字
-		if (d->description) { //利用d->description获取该网络接口设备的描述信息
-			cout << d->description << endl;
+	else {
+		pcap_if_t* cur = alldevs;
+		//打印信息
+		printf("All devices:\n");
+		for (int i = 1; cur != NULL; i++) {
+			printf("No.%d: %s\n", i, cur->description);
+			cur = cur->next;
+		}
+		//选择网口号
+		printf("Choose an adapter: \n");
+		int num = 0;
+		scanf("%d", &num);
+		for (int i = 0; i < num - 1; i++) {
+			alldevs = alldevs->next;
+		}
+		if (alldevs == NULL)
+		{
+			printf("Error: cannot find the adapter!\n");
+			pcap_freealldevs(alldevs);
+			return;
+		}
+		//打开网口
+		if ((adhandle = pcap_open(alldevs->name,          // 设备名
+			65536,            // 要捕捉的数据包的部分
+							  // 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
+			PCAP_OPENFLAG_PROMISCUOUS,    // 混杂模式
+			1000,             // 读取超时时间
+			NULL,             // 远程机器验证
+			errbuf            // 错误缓冲池
+		)) == NULL) 
+		{
+			printf("Error: adapter %s cannot be accessed!\n", alldevs->name);
+			pcap_freealldevs(alldevs);
+			return;
 		}
 		else {
-			cout << "无相关描述信息" << endl;
-			return -1;
+			printf("Successfully open!\n");
+			printf("Listening on %s...\n\n", alldevs->description);
 		}
 	}
-	if (i == 0)
-	{
-		cout << "wrong!" << endl;
-		return -1;
+}
+
+//获取ip地址
+void get_ip_netmask() {
+	int i = 0;
+	pcap_addr_t* addr = alldevs->addresses;
+	for (addr; addr != NULL; addr = addr->next) {
+		switch (addr->addr->sa_family)
+		{
+		case AF_INET:
+			myaddr[i] = *addr;
+			if (addr->addr) {
+				//printf("myip[0]:%d\n", myip[0]);
+				char* ip_str = (char*)malloc(sizeof(char) * 16);
+				iptostr(((struct sockaddr_in*)addr->addr)->sin_addr.s_addr, ip_str);
+				printf("My IP: %s\n", ip_str);
+				myip[i] = (char*)malloc(sizeof(char) * 16);
+				memcpy(myip[i], ip_str, 16);
+			}
+			if (addr->netmask) {
+				char* netmask_str = (char*)malloc(sizeof(char) * 16);
+				iptostr(((struct sockaddr_in*)addr->netmask)->sin_addr.s_addr, netmask_str);
+				printf("My netmask: %s\n", netmask_str);
+				mynetmask[i] = (char*)malloc(sizeof(char) * 16);
+				memcpy(mynetmask[i], netmask_str, 16);
+			}
+			i++;
+			break;
+		case AF_INET6:
+			break;
+		}
 	}
+}
 
-	cout << "请输入要打开的网口号（1-" << i << "）：";
-	cin >> inum;
-
-	//检查用户是否指定了有效的设备
-	if (inum < 1 || inum > i)
+//arp请求
+void ARP_request(DWORD sendip, DWORD recvip, BYTE sendmac[6]) {
+	ARPFrame_t packet;
+	memset(packet.FrameHeader.DesMAC, 0xff, 6);//broadcast
+	memcpy(packet.FrameHeader.SrcMAC, sendmac, 6);
+	memcpy(packet.SendHa, sendmac, 6);
+	memset(packet.RecvHa, 0x00, 6);
+	packet.FrameHeader.FrameType = htons(ETH_ARP);
+	packet.HardwareType = htons(ARP_HARDWARE);
+	packet.ProtocolType = htons(ETH_IP);
+	packet.HLen = 6;
+	packet.PLen = 4;
+	packet.Operation = htons(ARP_REQUEST);
+	packet.SendIP = sendip;
+	packet.RecvIP = recvip;
+	if (pcap_sendpacket(adhandle, (u_char*)&packet, sizeof(packet)) == -1)
 	{
-		cout << "适配器数量超出范围" << endl;
-
-		pcap_freealldevs(alldevs);
-		return -1;
+		printf("Sent ARP packet failed! Error: %d\n", GetLastError());
+		return;
 	}
-
-	//跳转到选定的设备
-	for (d = alldevs, i = 0; i < inum - 1; d = d->next, i++);
-	ifprint(d);
-
-	//打开网卡
-	if ((adhandle = pcap_open(d->name,          // 设备名
-		65536,            // 要捕捉的数据包的部分
-						  // 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
-		PCAP_OPENFLAG_PROMISCUOUS,    // 混杂模式
-		1000,             // 读取超时时间
-		NULL,             // 远程机器验证
-		errbuf            // 错误缓冲池
-	)) == NULL)
+	printf("Sent ARP packet succeed!\n");
+	return;
+}
+void ARP_reply(DWORD recvip, BYTE mac[6]) {
+	struct pcap_pkthdr* pkt_header;
+	const u_char* pkt_data;
+	memset(mac, 0, sizeof(mac));
+	int i = 0;
+	while ((pcap_next_ex(adhandle, &pkt_header, &pkt_data)) >= 0)
 	{
-		cout << "无法打开设备：检查是否是支持的NPcap" << endl;
-		pcap_freealldevs(alldevs);
-		return -1;
+		//find mac
+		ARPFrame_t* tmp = (ARPFrame_t*)pkt_data;
+		if (tmp->Operation == htons(ARP_REPLY)
+			&& tmp->SendIP == recvip)
+		{
+			for (i = 0; i < 6; i++) {
+				mac[i] = tmp->SendHa[i];
+			}
+			printf("Successfully get MAC!\n");
+			printf("MAC: %02x-%02x-%02x-%02x-%02x-%02x\n", mac[0], mac[1], mac[2],
+				mac[3], mac[4], mac[5]);
+			char* ipstr = (char*)malloc(sizeof(char) * 16);
+			iptostr(recvip, ipstr);
+			printf("IP: %s\n", ipstr);
+			break;
+		}
 	}
-	/* 释放设备列表 */
-	//pcap_freealldevs(alldevs);
+	if (i != 6)
+	{
+		printf("Failed to get MAC!\n");
+	}
+}
+void get_other_mac(int index, char* ip, BYTE mac[6]) {
+	ARP_request(inet_addr(myip[index]), inet_addr(ip), mymac[index]);
+	ARP_reply(inet_addr(ip), mac);
+}
 
-	printf("\nlistening on %s...\n", d->description);
-	m_MAC = (unsigned char*)GetSelfMac();
-	printf("输入目标IP:");
-	scanf("%s", &d_IP);
-	//HANDLE sendthread;      //发送ARP包线程
-	//HANDLE recvthread;       //接受ARP包线程
+//获取自身mac地址
+void get_my_mac(int index) {
+	BYTE sendmac[6] = { 1,1,1,1,1,1 };
+	DWORD sendip = inet_addr("100.100.100.100");
 
-	//sendthread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)SendArpPacket, adhandle, 0, NULL);
-	//recvthread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)GetLivePC, adhandle, 0, NULL);
+	DWORD recvip = ((struct sockaddr_in*)myaddr[index].addr)->sin_addr.s_addr;
+	ARP_request(sendip, recvip, sendmac);
+	struct pcap_pkthdr* pkt_header;
+	const u_char* pkt_data;
+	int i = 0;
+	while ((pcap_next_ex(adhandle, &pkt_header, &pkt_data)) >= 0)
+	{
+		//find my own mac
+		ARPFrame_t* tmp = (ARPFrame_t*)pkt_data;
+		if (tmp->Operation == htons(ARP_REPLY)
+			&& tmp->RecvIP == sendip
+			&& tmp->SendIP == recvip)
+		{
+			for (i = 0; i < 6; i++) {
+				mymac[index][i] = tmp->SendHa[i];
+			}
+			//printf("Successfully get my MAC!\n");
+			printf("My MAC: %02x-%02x-%02x-%02x-%02x-%02x\n\n", mymac[index][0], mymac[index][1], mymac[index][2],
+				mymac[index][3], mymac[index][4], mymac[index][5]);
+			break;
+		}
+	}
+	if (i != 6)
+	{
+		printf("Failed to get my MAC!\n");
+	}
+}
 
-	SendArpPacket(adhandle);
-	GetLivePC(adhandle);
+bool checkchecksum(Data_t* data) {
+	unsigned int sum = 0;
+	WORD* word = (WORD*)&data->IPHeader;
+	for (int i = 0; i < sizeof(IPHeader_t) / 2; i++) {
+		sum += word[i];
+		while (sum >= 0x10000) {
+			int tmp = sum >> 16;
+			sum -= 0x10000;
+			sum += tmp;
+		}
+	}
+	if (sum == 65535) {
+		return true;
+	}
+	printf("错误的校验和!\n");
+	return false;
+}
+//填充校验和
+void setchecksum(Data_t* data) {
+	data->IPHeader.Checksum = 0;
+	unsigned int sum = 0;
+	WORD* word = (WORD*)&data->IPHeader;
+	for (int i = 0; i < sizeof(IPHeader_t) / 2; i++) {
+		sum += word[i];
+		while (sum >= 0x10000) {
+			int tmp = sum >> 16;
+			sum -= 0x10000;
+			sum += tmp;
+		}
+	}
+	data->IPHeader.Checksum = ~sum;
+}
 
+//change MACs
+void sendpacket(ICMP_t data, BYTE dstmac[6]) {
+	Data_t* tmp = (Data_t*)&data;
+	memcpy(tmp->FrameHeader.SrcMAC, tmp->FrameHeader.DesMAC, 6);
+	memcpy(tmp->FrameHeader.DesMAC, dstmac, 6);
+	tmp->IPHeader.TTL--;
+	if (tmp->IPHeader.TTL < 0) {
+		printf("TTL invalid!\n");
+		return;
+	}
+	setchecksum(tmp);
+	if (pcap_sendpacket(adhandle, (const u_char*)tmp, 74) == 0) {
+		printf("Forward an IP message:\n");
+		printf("Src MAC: %02x-%02x-%02x-%02x-%02x-%02x\n",
+			tmp->FrameHeader.SrcMAC[0], tmp->FrameHeader.SrcMAC[1],
+			tmp->FrameHeader.SrcMAC[2], tmp->FrameHeader.SrcMAC[3],
+			tmp->FrameHeader.SrcMAC[4], tmp->FrameHeader.SrcMAC[5]);
+		printf("Des MAC: %02x-%02x-%02x-%02x-%02x-%02x\n",
+			tmp->FrameHeader.DesMAC[0], tmp->FrameHeader.DesMAC[1],
+			tmp->FrameHeader.DesMAC[2], tmp->FrameHeader.DesMAC[3],
+			tmp->FrameHeader.DesMAC[4], tmp->FrameHeader.DesMAC[5]);
+		char* src = (char*)malloc(sizeof(char) * 16);
+		char* dst = (char*)malloc(sizeof(char) * 16);
+		iptostr(tmp->IPHeader.SrcIP, src);
+		iptostr(tmp->IPHeader.DstIP, dst);
+		printf("Src IP: %s\n", src);
+		printf("Des IP: %s\n", dst);
+		printf("TTL: %d\n\n", tmp->IPHeader.TTL);
+	}
+}
+
+bool MACcmp(BYTE MAC1[], BYTE MAC2[]) {
+	for (int i = 0; i < 6; i++) {
+		if (MAC1[i] != MAC2[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+void work(RouteTable* routetable) {
+	memset(broadcastmac, 0xff, 6);
+	//printf("Begin to work...\n");
+	clock_t start, end;
+	start = clock();
+	while (true) {
+		end = clock();
+		printf("time=%f\n", (double)(end - start) / CLK_TCK);
+		if ((double)(end - start) / CLK_TCK > MAX_WORK_TIME) {
+			printf("Timed out!\n");
+			break;
+		}
+		pcap_pkthdr* pkt_header;
+		const u_char* pkt_data;
+		//捕获数据包
+		//判断目的mac是否为自己的mac
+		while (true) {
+			if (pcap_next_ex(adhandle, &pkt_header, &pkt_data) > 0) {
+				//printf("Get a packet!\n");
+				FrameHeader_t* tmp = (FrameHeader_t*)pkt_data;
+				if (MACcmp(tmp->DesMAC, mymac[0]) && (ntohs(tmp->FrameType) == ETH_IP)) {
+					break;
+				}
+				continue;
+			}
+		}
+		FrameHeader_t* frame_header = (FrameHeader_t*)pkt_data;
+
+		if (MACcmp(frame_header->DesMAC, mymac[0])) {
+			if (ntohs(frame_header->FrameType) == ETH_IP) {
+				//printf("Get a packet!\n");
+				Data_t* data = (Data_t*)pkt_data;
+
+				//TODO:write to log ip("recieve",data)
+				printf("\nRecieve an IP message:\n");
+				printf("Src MAC: %02x-%02x-%02x-%02x-%02x-%02x\n",
+					data->FrameHeader.SrcMAC[0], data->FrameHeader.SrcMAC[1],
+					data->FrameHeader.SrcMAC[2], data->FrameHeader.SrcMAC[3],
+					data->FrameHeader.SrcMAC[4], data->FrameHeader.SrcMAC[5]);
+				printf("Des MAC: %02x-%02x-%02x-%02x-%02x-%02x\n",
+					data->FrameHeader.DesMAC[0], data->FrameHeader.DesMAC[1],
+					data->FrameHeader.DesMAC[2], data->FrameHeader.DesMAC[3],
+					data->FrameHeader.DesMAC[4], data->FrameHeader.DesMAC[5]);
+				char* src = (char*)malloc(sizeof(char) * 16);
+				char* dst = (char*)malloc(sizeof(char) * 16);
+				iptostr(data->IPHeader.SrcIP, src);
+				iptostr(data->IPHeader.DstIP, dst);
+				printf("Src IP: %s\n", src);
+				printf("Des IP: %s\n", dst);
+				printf("TTL: %d\n\n", data->IPHeader.TTL);
+
+
+				DWORD dstip = data->IPHeader.DstIP;
+				DWORD midip = routetable->lookup(dstip);//查找路由表中是否有对应表项
+				if (midip == -1) {//如果没有则直接丢弃或直接递交至上层
+					//printf("Error: no match item in route table!\n");
+					continue;//do nothing
+				}
+
+				if (checkchecksum(data)) {//如果校验和不正确，则直接丢弃不进行处理
+					if (data->IPHeader.DstIP != inet_addr(myip[0])
+						&& data->IPHeader.DstIP != inet_addr(myip[1])) {
+						//不是广播消息
+						int res1 = MACcmp(data->FrameHeader.DesMAC, broadcastmac);
+						int res2 = MACcmp(data->FrameHeader.SrcMAC, broadcastmac);
+						if (!res1 && !res2) {
+							//ICMP报文包含IP数据包报头和其它内容
+							ICMP_t* icmp_ptr = (ICMP_t*)pkt_data;
+							ICMP_t icmp = *icmp_ptr;
+							BYTE* mac = (BYTE*)malloc(sizeof(BYTE) * 6);
+							if (midip == 0) { //直接投递，查找目的IP的MAc
+								//find arp
+								if (ARPTableItem::lookup(dstip, mac) == 0) {
+									printf("Cannot find matched ARP!\n");
+									char* dst = (char*)malloc(sizeof(char) * 16);
+									iptostr(dstip, dst);
+									get_other_mac(0, dst, mac);
+									ARPTableItem::insert(dstip, mac);
+								}
+								printf("\nnexthop: %s\n", dst);
+								sendpacket(icmp, mac);
+							}
+							else if (midip != -1) { //非直接投递，查找下一条IP的MAC
+
+								//find arp for midip								
+								if (ARPTableItem::lookup(midip, mac) == 0) {
+									printf("Cannot find matched ARP!\n");
+									char* dst = (char*)malloc(sizeof(char) * 16);
+									iptostr(midip, dst);
+									//printf("999 %s\n", dst);
+									get_other_mac(0, dst, mac);
+									ARPTableItem::insert(midip, mac);
+								}
+								printf("\nnexthop: %s\n", dst);
+								sendpacket(icmp, mac);
+							}
+						}
+					}
+				}
+				else {
+					printf("Error: wrong checksum!\n");
+				}
+			}
+		}
+	}
+}
+
+void endwork() {
 	pcap_freealldevs(alldevs);
-	//CloseHandle(sendthread);
-	//CloseHandle(recvthread);
+}
+
+int main() {
+	get_device();
+	get_ip_netmask();
+	RouteTable* routetable = new RouteTable();
+	get_my_mac(0);
+
+	routetable->print();
+
+
+	printf("添加路由表项：\n");
+	printf("Dst net: ");
+	char dstnet[1024] = { 0 };
+	scanf("%s", dstnet);
+	printf("\nNetmask: ");
+	char netmask[1024] = { 0 };
+	scanf("%s", netmask);
+	printf("\nNext Hop: ");
+	char nexthop[1024] = { 0 };
+	scanf("%s", nexthop);
+	RouteTableItem* newitem = new RouteTableItem();
+	newitem->dstnet = inet_addr(dstnet);
+	newitem->netmask = inet_addr(netmask);
+	newitem->nextip = inet_addr(nexthop);
+	newitem->type = 1;
+	routetable->add(newitem);
+	printf("成功添加路由表项!\n");
+
+	int d = 0;
+	while (true) {
+		printf("是否删除路由表项：");
+		scanf("%d", &d);
+		if (d != 0) {
+			routetable->remove(d - 1);
+			routetable->print();
+		}
+		else {
+			break;
+		}
+	}
+
+	ARPTableItem::insert(inet_addr(myip[0]), mymac[0]);
+	ARPTableItem::insert(inet_addr(myip[1]), mymac[1]);
+
+	routetable->print();
+	for (int i = 0; i < ARPTableItem::num; i++) {
+		arptable[i].print();
+	}
+
+	//char recvip[] = "192.168.0.101";
+	//BYTE* mac = (BYTE*)malloc(sizeof(BYTE) * 6);
+	//get_other_mac(0, recvip, mac);
+
+	work(routetable);
+
+	endwork();
 	return 0;
 }

@@ -1,15 +1,18 @@
 #include <SDKDDKVer.h>
 #include <stdio.h>
 #include <tchar.h>
-#include <stdio.h>
-#include <tchar.h>
 #include <iostream>
 #include <WinSock2.h>
 #include <Windows.h>
 #include <conio.h>
-#include<iomanip>
-#include<WS2tcpip.h>
-#include<cstdlib>
+#include <iomanip>
+#include <WS2tcpip.h>
+#include <cstdlib>
+#include <algorithm>
+#include <cstdio>
+#include <string>
+#include <vector>
+#include <fstream> 
 
 #define HAVE_REMOTE
 #include <pcap.h>
@@ -28,38 +31,47 @@
 using namespace std;
 
 #pragma pack(1)
-typedef struct FrameHeader_t {	//帧首部
-	BYTE	DesMAC[6];	// 目的地址+
-	BYTE 	SrcMAC[6];	// 源地址+
-	WORD	FrameType;	// 帧类型
-} FrameHeader_t;
-typedef struct ArpPacket {	//包含帧首部和ARP首部的数据包
-	FrameHeader_t	ed;
-	WORD HardwareType; //硬件类型
-	WORD ProtocolType; //协议类型
-	BYTE HardwareAddLen; //硬件地址长度
-	BYTE ProtocolAddLen; //协议地址长度
-	WORD OperationField; //操作类型，ARP请求（1），ARP应答（2），RARP请求（3），RARP应答（4）。
-	BYTE SourceMacAdd[6]; //源mac地址
-	DWORD SourceIpAdd; //源ip地址
-	BYTE DestMacAdd[6]; //目的mac地址
-	DWORD DestIpAdd; //目的ip地址
-} ArpPacket;
-typedef struct IPHeader_t {		//IP首部
-	BYTE Ver_HLen; //IP协议版本和IP首部长度。高4位为版本，低4位为首部的长度(单位为4bytes)
-	BYTE TOS;//服务类型+
-	WORD TotalLen;//总长度+
-	WORD ID;//标识
-	WORD Flag_Segment;//标志 片偏移
-	BYTE TTL;//生存周期
-	BYTE Protocol;//协议
-	WORD Checksum;//头部校验和
-	u_int SrcIP;//源IP
-	u_int DstIP;//目的IP
-} IPHeader_t;
-typedef struct Data_t {	//包含帧首部和IP首部的数据包
-	FrameHeader_t	FrameHeader;
-	IPHeader_t		IPHeader;
-} Data_t;
-#pragma pack()
+#pragma pack(1)
+typedef struct FrameHeader_t {//帧首部
+	BYTE DesMAC[6];//目的地址
+	BYTE SrcMAC[6];//源地址
+	WORD FrameType;//帧类型
+}FrameHeader_t;
 
+typedef struct ARPFrame_t {
+	FrameHeader_t FrameHeader;//帧首部
+	WORD HardwareType;//硬件类型
+	WORD ProtocolType;//协议类型
+	BYTE HLen;//硬件地址长度
+	BYTE PLen;//协议地址
+	WORD Operation;//操作
+	BYTE SendHa[6];//发送方MAC
+	DWORD SendIP;//发送方IP
+	BYTE RecvHa[6];//接收方MAC
+	DWORD RecvIP;//接收方IP
+}ARPFrame_t;
+
+typedef struct IPHeader_t {//IP首部
+	BYTE Ver_HLen;
+	BYTE TOS;
+	WORD TotalLen;
+	WORD ID;
+	WORD Flag_Segment;
+	BYTE TTL;//生命周期
+	BYTE Protocol;
+	WORD Checksum;//校验和
+	ULONG SrcIP;//源IP
+	ULONG DstIP;//目的IP
+}IPHeader_t;
+
+typedef struct Data_t {//包含帧首部和IP首部的数据包
+	FrameHeader_t FrameHeader;//帧首部
+	IPHeader_t IPHeader;//IP首部
+}Data_t;
+
+typedef struct ICMP_t {//包含帧首部和IP首部的数据包
+	FrameHeader_t FrameHeader;
+	IPHeader_t IPHeader;
+	char buf[0x80];
+}ICMP_t;
+#pragma pack()
