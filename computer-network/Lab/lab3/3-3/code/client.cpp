@@ -1,12 +1,13 @@
 #include "define.h"
 #define ADDRSRV "127.0.0.1"
-#define PORT 7878
+#define PORT 7879
 
 static int addrLen;
 double MAX_TIME = CLOCKS_PER_SEC / 4;
 static u_long fileLen;
 SOCKADDR_IN addrSrv;
-static const u_long windowSize = 8 * MSS;
+//static const u_long windowSize = 8 * MSS;
+static const u_long windowSize = MSS;
 static u_int base = 0;//握手阶段确定的初始序列号
 static u_int nextSeqNum = base;
 static mutex mutexLock;
@@ -26,7 +27,6 @@ static Packet sendPkts[50]{};
 
 static int RENO_STAGE = START_UP;
 
-// new RENO
 static bool fastResend = false;
 static bool timeOutResend = false;
 
@@ -241,7 +241,7 @@ DWORD WINAPI ACKHandler(LPVOID param) {
 #endif
                 }
 
-                if (base == nextSeqNum)
+                if (base == nextSeqNum)//发送的全部被确认
                     stopTimer = true;
                 else {
                     start = clock();

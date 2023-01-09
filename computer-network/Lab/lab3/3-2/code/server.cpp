@@ -1,6 +1,6 @@
 #include "define.h"
 
-#define PORT 7879
+#define PORT 7878
 #define ADDRSRV "127.0.0.1"
 #define MAX_FILE_SIZE 100000000
 double MAX_TIME = CLOCKS_PER_SEC;

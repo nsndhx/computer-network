@@ -1,6 +1,6 @@
 #include "define.h"
 
-#define PORT 7878
+#define PORT 7879
 #define ADDRSRV "127.0.0.1"
 
 static SOCKADDR_IN addrSrv;
